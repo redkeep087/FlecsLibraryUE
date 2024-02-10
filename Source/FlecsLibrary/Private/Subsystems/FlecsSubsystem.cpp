@@ -3,6 +3,10 @@
 static ecs_os_thread_t threadcounter = 0;
 static TMap<ecs_os_thread_t, UE::Tasks::TTask<void*>> ThreadsToTasks;
 void UFlecsSubsystem::Initialize(FSubsystemCollectionBase& Collection) {
+    // Setup subsystem ticker
+	OnTickDelegate = FTickerDelegate::CreateUObject(this, &UFlecsSubsystem::Tick);
+	OnTickHandle = FTSTicker::GetCoreTicker().AddTicker(OnTickDelegate);
+
 	char* argv[] = { "Unreal Engine FLECS" };
 	world = new flecs::world();
 
@@ -56,4 +60,12 @@ void UFlecsSubsystem::Deinitialize() {
 
 	UE_LOG(LogTemp, Warning, TEXT("Flecs Subsystem has shutdown"));
 	Super::Deinitialize();
+}
+
+bool UFlecsSubsystem::Tick(float DeltaTime)
+{
+	if(world) { 
+		world->progress(DeltaTime);
+	}
+	return true;
 }

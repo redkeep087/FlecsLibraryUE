@@ -16,4 +16,9 @@ public:
 	virtual void Initialize(FSubsystemCollectionBase& Collection) override;
     
 	virtual void Deinitialize() override;
+
+	// Ticker system via FSTicker
+	FTickerDelegate OnTickDelegate;
+	FTSTicker::FDelegateHandle OnTickHandle;
+	bool Tick(float DeltaTime);
 };
