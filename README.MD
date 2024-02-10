@@ -12,7 +12,7 @@ This project will be a hub for future Unreal Engine users to get into ECS. It'll
 
 ## Why integrate FLECS into Unreal Engine? Why not just use Unreal Engine's Mass?
 
-FLECS is a pretty fast and lightweight ECS system. Also its quite simple to setup on any project. Just including the flecs.c and flecs.h can easily make it work on any system without much headache. Personally speaking there are several reasons why I am picking flecs over Mass. Take these opinion
+FLECS is a pretty fast and lightweight ECS system. Also its quite simple to setup on any project. Just including the flecs.c and flecs.h can easily make it work on any system without much headache. Personally speaking there are several reasons why I am picking flecs over Mass. Take these opinion with a grin of salt.
 
 For Mass:
 - Firstly Mass to me looks quite messy with inheritance system and making mess of inheritance system is very much against the principal of ECS
