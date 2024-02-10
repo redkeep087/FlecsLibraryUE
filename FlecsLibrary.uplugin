@@ -1,0 +1,41 @@
+{
+	"FileVersion": 3,
+	"Version": 1,
+	"VersionName": "5.2.1",
+	"FriendlyName": "Flecs Library",
+	"Description": "This plugin contains base of flecs",
+	"Category": "Animation",
+	"CreatedBy": "Redkeep087",
+	"CreatedByURL": "https://github.com/dyanikoglu",
+	"DocsURL": "https://github.com/dyanikoglu/ALS-Community",
+	"SupportURL": "https://github.com/dyanikoglu/ALS-Community/issues",
+	"EngineVersion": "5.1",
+	"EnabledByDefault": true,
+	"CanContainContent": true,
+	"IsBetaVersion": false,
+	"IsExperimentalVersion": false,
+	"Installed": false,
+	"Modules": [
+		{
+			"Name": "FlecsLibrary",
+			"Type": "Runtime",
+			"LoadingPhase": "Default",
+			"AdditionalDependencies": [
+				"Engine",
+				"AIModule",
+				"GameplayTasks",
+				"PhysicsCore"
+			]
+		}
+	],
+	"Plugins": [
+		{
+			"Name": "Niagara",
+			"Enabled": true
+		},
+		{
+			"Name": "EnhancedInput",
+			"Enabled": true
+		}
+	]
+}
