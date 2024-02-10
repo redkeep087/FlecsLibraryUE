@@ -23,7 +23,7 @@ For Mass:
 For FLECS:
 - It is much more done than Mass for ECS Solution.
 - You can communicate with Unreal's Actor and FLECS quite easily thus makes your converting your codes to FLECS much easily.
-- Comes with nice examples on [flecs](https://github.com/SanderMertens/flecs) repo to understand how it works.
+- Comes with nice examples on [flecs](https://github.com/SanderMertens/flecs/tree/master/examples) repo to understand how it works.
 
 ## Challenges to FLECS integration in Unreal Engine.
 
