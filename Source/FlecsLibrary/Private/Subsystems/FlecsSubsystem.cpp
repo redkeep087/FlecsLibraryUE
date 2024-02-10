@@ -52,6 +52,7 @@ void UFlecsSubsystem::Initialize(FSubsystemCollectionBase& Collection) {
 }
 
 void UFlecsSubsystem::Deinitialize() {
+	FTSTicker::GetCoreTicker().RemoveTicker(OnTickHandle);
 	if (world)
 	{
 		delete world;
