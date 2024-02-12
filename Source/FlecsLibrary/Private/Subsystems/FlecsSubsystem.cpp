@@ -1,4 +1,5 @@
 #include "Subsystems/FlecsSubsystem.h"
+#include "flecs/FlecsSetupClass.h"
 
 static ecs_os_thread_t threadcounter = 0;
 static TMap<ecs_os_thread_t, UE::Tasks::TTask<void*>> ThreadsToTasks;
@@ -44,15 +45,24 @@ void UFlecsSubsystem::Initialize(FSubsystemCollectionBase& Collection) {
     ecs_os_api.task_new_ = NewFlecsTaskFunc;
     ecs_os_api.task_join_ = JoinFlecsTask;
 
-    // Setup FLECS Components and System here
-
-    UE_LOG(LogTemp, Warning, TEXT("Flecs Subsystem Initialized"));
+#ifdef EXAMPLE_FLECS_ACTOR_COMMUNICATION
+    flecsActorCommunicationSetup = new FlecsActorCommunicationSetup(GetWorld(), world);
+#endif
 
 	Super::Initialize(Collection);
+    UE_LOG(LogTemp, Warning, TEXT("Flecs Subsystem Initialized"));
 }
 
 void UFlecsSubsystem::Deinitialize() {
 	FTSTicker::GetCoreTicker().RemoveTicker(OnTickHandle);
+
+#ifdef EXAMPLE_FLECS_ACTOR_COMMUNICATION
+    if (flecsActorCommunicationSetup) {
+        delete flecsActorCommunicationSetup;
+        flecsActorCommunicationSetup = nullptr;
+    }
+#endif
+
 	if (world)
 	{
 		delete world;
