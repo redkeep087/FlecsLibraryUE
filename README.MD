@@ -12,7 +12,7 @@ This project will be a hub for future Unreal Engine users to get into ECS. It'll
 
 ## Why integrate FLECS into Unreal Engine? Why not just use Unreal Engine's Mass?
 
-FLECS is a pretty fast and lightweight ECS system. Also its quite simple to setup on any project. Just including the flecs.c and flecs.h can easily make it work on any system without much headache. Personally speaking there are several reasons why I am picking flecs over Mass. Take these opinion
+FLECS is a pretty fast and lightweight ECS system. Also its quite simple to setup on any project. Just including the flecs.c and flecs.h can easily make it work on any system without much headache. Personally speaking there are several reasons why I am picking flecs over Mass. Take these opinion with a grin of salt.
 
 For Mass:
 - Firstly Mass to me looks quite messy with inheritance system and making mess of inheritance system is very much against the principal of ECS
@@ -34,7 +34,7 @@ FLECS regardless comes with few challenges. We already somewhat discussed the pr
 - Making some brief examples to communicate between ECS World and Unreal Engine's Actor world for showing basic conversion process.
 
 ## Future works
-- **Adding Physics Support:** Physics support can be difficult and relies heavily on what Unreal Engine will do on future with its Engine. As of now in 10 Feb 2024, Chaos Physics is still in primitive stage from switch from Nvidia's PhysX Engine. Physics is single threaded and got inferior performance. Low level access to Physics not easy as it is heavily integrated with Actor system of Unreal Engine. Alternative Solution could be [Bullet Physics](https://github.com/bulletphysics/bullet3) since its much more completed and performant.
+- **Adding Physics Support:** Physics support can be difficult and relies heavily on what Unreal Engine will do on future with its Engine. As of now in 10 Feb 2024, Chaos Physics is still in primitive stage from switch from Nvidia's PhysX Engine. Physics is single threaded and got inferior performance. Low level access to Physics not easy as it is heavily integrated with Actor system of Unreal Engine. Alternative Solution could be [Bullet Physics](https://github.com/bulletphysics/bullet3) since its much more completed, deterministic and performant.
 - **Adding Navigation support:** Navigation in Navmesh looks much easy to integrate. We can just use its pathfinding system directly to our ECS World via singletons.
 - **Trying to multithread existing components of Unreal Engine:** We can try to multithread existing components. Most notably, Character Movement Component of Unreal Engine. Which has notorious reputation for being unoptimized and thanks to being singlethreaded you can't put more units on it. We can start with making it safe to be multithreaded or simply re-write it into FLECS components and systems.
 - **Converting popular community driven plugins to FLECS:** We can try converting community driven plugins/assets like ALS(Advanced Locomotion System) into FLECS.
