@@ -1,5 +1,6 @@
 #include "Subsystems/FlecsSubsystem.h"
 #include "flecs/FlecsSetupClass.h"
+#include "Kismet/KismetSystemLibrary.h"
 
 static ecs_os_thread_t threadcounter = 0;
 static TMap<ecs_os_thread_t, UE::Tasks::TTask<void*>> ThreadsToTasks;
@@ -51,6 +52,32 @@ void UFlecsSubsystem::Initialize(FSubsystemCollectionBase& Collection) {
 
 	Super::Initialize(Collection);
     UE_LOG(LogTemp, Warning, TEXT("Flecs Subsystem Initialized"));
+}
+
+FFlecsEntityHandle UFlecsSubsystem::RegisterEntity(AActor* client) {
+    if (client == nullptr) {
+        UE_LOG(LogTemp, Warning, TEXT("Actor is NULL"));
+        return FFlecsEntityHandle();
+    }
+#ifdef EXAMPLE_FLECS_ACTOR_COMMUNICATION
+
+    for (auto c : client->GetComponents()) {
+        if (!c) continue;
+
+        IFlecsClient* flecsClient = Cast<IFlecsClient>(c);
+        if (flecsClient) {
+            return flecsActorCommunicationSetup->RegisterFlecsActor(flecsClient);
+        }
+    }
+
+    if (flecsActorCommunicationSetup) {
+        IFlecsClient* flecsClient = Cast<IFlecsClient>(client);
+        if (flecsClient)
+            return flecsActorCommunicationSetup->RegisterFlecsActor(flecsClient);
+    }
+#endif
+    UE_LOG(LogTemp, Warning, TEXT("No Entity Registered"));
+    return FFlecsEntityHandle();
 }
 
 void UFlecsSubsystem::Deinitialize() {
