@@ -7,6 +7,7 @@
 #include "FlecsSubsystem.generated.h"
 
 #define EXAMPLE_FLECS_ACTOR_COMMUNICATION
+#undef EXAMPLE_FLECS_ACTOR_COMMUNICATION
 
 class FlecsActorCommunicationSetup;
 
@@ -32,8 +33,12 @@ public:
 	FTickerDelegate OnTickDelegate;
 	FTSTicker::FDelegateHandle OnTickHandle;
 
+	flecs::world* GetEcsWorld() const { return world; }
+
 	bool Tick(float DeltaTime);
 
 	UFUNCTION(BlueprintCallable, Category = "FLECS")
 	FFlecsEntityHandle RegisterEntity(AActor* client);
+
+	virtual FFlecsEntityHandle RegisterEntity_Internal(AActor* client);
 };

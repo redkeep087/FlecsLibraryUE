@@ -61,16 +61,15 @@ FFlecsEntityHandle UFlecsSubsystem::RegisterEntity(AActor* client) {
     }
 #ifdef EXAMPLE_FLECS_ACTOR_COMMUNICATION
 
-    for (auto c : client->GetComponents()) {
-        if (!c) continue;
-
-        IFlecsClient* flecsClient = Cast<IFlecsClient>(c);
-        if (flecsClient) {
-            return flecsActorCommunicationSetup->RegisterFlecsActor(flecsClient);
-        }
-    }
-
     if (flecsActorCommunicationSetup) {
+        for (auto c : client->GetComponents()) {
+            if (!c) continue;
+
+            IFlecsClient* flecsClient = Cast<IFlecsClient>(c);
+            if (flecsClient) {
+                return flecsActorCommunicationSetup->RegisterFlecsActor(flecsClient);
+        }
+}
         IFlecsClient* flecsClient = Cast<IFlecsClient>(client);
         if (flecsClient)
             return flecsActorCommunicationSetup->RegisterFlecsActor(flecsClient);
@@ -78,6 +77,10 @@ FFlecsEntityHandle UFlecsSubsystem::RegisterEntity(AActor* client) {
 #endif
     UE_LOG(LogTemp, Warning, TEXT("No Entity Registered"));
     return FFlecsEntityHandle();
+}
+
+FFlecsEntityHandle UFlecsSubsystem::RegisterEntity_Internal(AActor* client) {
+    return RegisterEntity(client);
 }
 
 void UFlecsSubsystem::Deinitialize() {

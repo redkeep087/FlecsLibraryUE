@@ -9,3 +9,7 @@ struct FlecsPosition {
 struct FlecsRotationZ {
     float value;
 };
+
+struct FlecsTransform {
+    FTransform value;
+};

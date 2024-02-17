@@ -48,6 +48,7 @@ class FLECSLIBRARY_API UFlecsClientComponent : public UActorComponent, public IF
 public:
 	virtual FFlecsEntityHandle GetEntityHandle() override;
 	virtual AActor* GetActor() override;
+	virtual void BeginPlay() override;
 protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
 	FFlecsEntityHandle FlecsHandle;
