@@ -6,6 +6,9 @@
 #include "FlecsClient.generated.h"
 
 class IFlecsClient;
+struct FlecsCommunicator {
+	IFlecsClient* ptr;
+};
 
 USTRUCT(BlueprintType)
 struct FFlecsEntityHandle

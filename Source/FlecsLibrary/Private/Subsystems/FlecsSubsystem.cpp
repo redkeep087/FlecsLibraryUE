@@ -54,33 +54,53 @@ void UFlecsSubsystem::Initialize(FSubsystemCollectionBase& Collection) {
     UE_LOG(LogTemp, Warning, TEXT("Flecs Subsystem Initialized"));
 }
 
+// This can be overridable
+// Try to write something like this in your derivative implementation
 FFlecsEntityHandle UFlecsSubsystem::RegisterEntity(AActor* client) {
-    if (client == nullptr) {
-        UE_LOG(LogTemp, Warning, TEXT("Actor is NULL"));
-        return FFlecsEntityHandle();
-    }
+    IFlecsClient* returnedClient = nullptr;
 #ifdef EXAMPLE_FLECS_ACTOR_COMMUNICATION
-
     if (flecsActorCommunicationSetup) {
+        IFlecsClient* flecsClient = nullptr;
         for (auto c : client->GetComponents()) {
             if (!c) continue;
 
-            IFlecsClient* flecsClient = Cast<IFlecsClient>(c);
+            flecsClient = Cast<IFlecsClient>(c);
             if (flecsClient) {
-                return flecsActorCommunicationSetup->RegisterFlecsActor(flecsClient);
+                returnedClient = flecsClient;
+                break;
+            }
         }
-}
-        IFlecsClient* flecsClient = Cast<IFlecsClient>(client);
+        if (flecsClient == nullptr) {
+            flecsClient = Cast<IFlecsClient>(client);
+        }
+
         if (flecsClient)
-            return flecsActorCommunicationSetup->RegisterFlecsActor(flecsClient);
+            return RegisterEntity_Internal(flecsClient);
     }
 #endif
-    UE_LOG(LogTemp, Warning, TEXT("No Entity Registered"));
-    return FFlecsEntityHandle();
+    if (returnedClient) {
+        return RegisterEntity_Internal(returnedClient);
+    }
+    else {
+        UE_LOG(LogTemp, Warning, TEXT("No Clients found"));
+        return FFlecsEntityHandle();
+    }
 }
 
-FFlecsEntityHandle UFlecsSubsystem::RegisterEntity_Internal(AActor* client) {
-    return RegisterEntity(client);
+FFlecsEntityHandle UFlecsSubsystem::RegisterEntity_Internal(IFlecsClient* client) {
+    if (client == nullptr) {
+        UE_LOG(LogTemp, Warning, TEXT("Client is NULL"));
+        return FFlecsEntityHandle();
+    }
+
+#ifdef EXAMPLE_FLECS_ACTOR_COMMUNICATION
+    if (flecsActorCommunicationSetup) {
+        return flecsActorCommunicationSetup->RegisterFlecsActor(client);
+    }
+#endif
+
+    UE_LOG(LogTemp, Warning, TEXT("No Entity Registered"));
+    return FFlecsEntityHandle();
 }
 
 void UFlecsSubsystem::Deinitialize() {

@@ -26,6 +26,8 @@ public:
 	// Derivative subsystem should make it true
 	virtual bool ShouldCreateSubsystem(UObject* Outer) const override { return false; }
 
+// Uncomment this define to test example.
+//#define EXAMPLE_FLECS_ACTOR_COMMUNICATION
 #ifdef EXAMPLE_FLECS_ACTOR_COMMUNICATION
 	FlecsActorCommunicationSetup* flecsActorCommunicationSetup = nullptr;
 #endif
@@ -40,5 +42,5 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "FLECS")
 	FFlecsEntityHandle RegisterEntity(AActor* client);
 
-	virtual FFlecsEntityHandle RegisterEntity_Internal(AActor* client);
+	virtual FFlecsEntityHandle RegisterEntity_Internal(IFlecsClient* client);
 };
