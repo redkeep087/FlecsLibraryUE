@@ -6,6 +6,10 @@ struct FlecsPosition {
     FVector value;
 };
 
+struct FlecsOldPosition {
+    FVector value;
+};
+
 struct FlecsRotationZ {
     float value;
 };
