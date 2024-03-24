@@ -5,7 +5,7 @@
 
 static std::atomic<int32> GFLECSThreadCounter = 0;
 static TMap<int32, UE::Tasks::TTask<int32>> GFlecsTasksMap;
-void UFlecsSubsystem::Initialize(FSubsystemCollectionBase& Collection) {
+void UFlecsSubsystem::OnWorldBeginPlay(UWorld& InWorld) {
     // Setup subsystem ticker
 	//OnTickDelegate = FTickerDelegate::CreateUObject(this, &UFlecsSubsystem::Tick);
 	//OnTickHandle = FTSTicker::GetCoreTicker().AddTicker(OnTickDelegate);
@@ -108,13 +108,8 @@ void UFlecsSubsystem::Initialize(FSubsystemCollectionBase& Collection) {
         return FPlatformTime::Cycles64();
     };
 
-	Super::Initialize(Collection);
-    UE_LOG(LogTemp, Warning, TEXT("Flecs Subsystem Initialized"));
-}
-
-void UFlecsSubsystem::PostInitialize()
-{
-    Super::PostInitialize();
+    Super::OnWorldBeginPlay(InWorld);
+    UE_LOG(LogTemp, Warning, TEXT("Flecs Subsystem World BeginPlay"));
 }
 
 TStatId UFlecsSubsystem::GetStatId() const

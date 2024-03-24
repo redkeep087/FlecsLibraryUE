@@ -23,8 +23,9 @@ protected:
 	float updateAccumulator = 0.0f;
 
 public:
-	virtual void Initialize(FSubsystemCollectionBase& Collection) override;
-	virtual void PostInitialize() override;
+	//virtual void Initialize(FSubsystemCollectionBase& Collection) override;
+	//virtual void PostInitialize() override;
+	virtual void OnWorldBeginPlay(UWorld& InWorld);
 	virtual void Deinitialize() override;
 
 	// By default it will be false
