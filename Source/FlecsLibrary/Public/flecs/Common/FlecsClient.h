@@ -3,6 +3,8 @@
 #include "CoreMinimal.h"
 #include "UObject/Interface.h"
 #include "GameFramework/Actor.h"
+#include "FLECS/flecs.h"
+
 #include "FlecsClient.generated.h"
 
 class IFlecsClient;
@@ -16,13 +18,12 @@ struct FFlecsEntityHandle
 	GENERATED_BODY()
 		FFlecsEntityHandle() {}
 
-	// Couldn't got it working with long and faced Blueprint related error
-	FFlecsEntityHandle(int inId)
+	FFlecsEntityHandle(flecs::entity refEntity)
 	{
-		FlecsEntityId = inId;
+		FlecsEntity = refEntity;
 	}
-	UPROPERTY(BlueprintReadWrite)
-		int FlecsEntityId;
+	
+	flecs::entity FlecsEntity;
 };
 
 // This class does not need to be modified.

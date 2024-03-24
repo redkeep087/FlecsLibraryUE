@@ -4,10 +4,11 @@
 
 void UFlecsClientComponent::BeginPlay() {
 	AActor* actor = GetActor();
-	UFlecsSubsystem* flecsSubsystem = UGameplayStatics::GetGameInstance(actor)->GetSubsystem<UFlecsSubsystem>();
+	UFlecsSubsystem* flecsSubsystem = GetWorld()->GetSubsystem<UFlecsSubsystem>();
 	if (flecsSubsystem) {
 		FlecsHandle = flecsSubsystem->RegisterEntity_Internal(this);
 	}
+	Super::BeginPlay();
 }
 
 FFlecsEntityHandle UFlecsClientComponent::GetEntityHandle() {

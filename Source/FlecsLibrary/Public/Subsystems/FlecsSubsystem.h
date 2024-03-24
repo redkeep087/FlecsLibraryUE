@@ -2,42 +2,46 @@
 
 #include "CoreMinimal.h"
 #include "flecs/flecs.h"
-#include "Examples/FlecsActorCommunication/FlecsActorCommunicationSetup.h"
-
+#include "FLECS/Common/FlecsClient.h"
+#include "Subsystems/WorldSubsystem.h"
 #include "FlecsSubsystem.generated.h"
 
-#define EXAMPLE_FLECS_ACTOR_COMMUNICATION
-#undef EXAMPLE_FLECS_ACTOR_COMMUNICATION
+struct FlecsFixedUpdate {
 
-class FlecsActorCommunicationSetup;
+};
 
 UCLASS()
-class FLECSLIBRARY_API UFlecsSubsystem : public UGameInstanceSubsystem
+class FLECSLIBRARY_API UFlecsSubsystem : public UTickableWorldSubsystem // UGameInstanceSubsystem
 {
 	GENERATED_BODY()
+
 protected:
 	flecs::world* world = nullptr;
+	flecs::entity regularPipeline;
+	flecs::entity fixedtickPipeline;
+	const float FIXED_TIME = (float)1 / 25; // 25 FPS
+	float updateAccumulator = 0.0f;
 
 public:
 	virtual void Initialize(FSubsystemCollectionBase& Collection) override;
+	virtual void PostInitialize() override;
 	virtual void Deinitialize() override;
 
 	// By default it will be false
 	// Derivative subsystem should make it true
 	virtual bool ShouldCreateSubsystem(UObject* Outer) const override { return false; }
 
-// Uncomment this define to test example.
-//#define EXAMPLE_FLECS_ACTOR_COMMUNICATION
-#ifdef EXAMPLE_FLECS_ACTOR_COMMUNICATION
-	FlecsActorCommunicationSetup* flecsActorCommunicationSetup = nullptr;
-#endif
+	virtual bool DoesSupportWorldType(const EWorldType::Type WorldType) const;
+
 	// Ticker system via FSTicker
-	FTickerDelegate OnTickDelegate;
-	FTSTicker::FDelegateHandle OnTickHandle;
+	//FTickerDelegate OnTickDelegate;
+	//FTSTicker::FDelegateHandle OnTickHandle;
 
 	flecs::world* GetEcsWorld() const { return world; }
 
-	bool Tick(float DeltaTime);
+	virtual TStatId GetStatId() const override;
+	//bool Tick(float DeltaTime);
+	virtual void Tick(float DeltaTime) override;
 
 	UFUNCTION(BlueprintCallable, Category = "FLECS")
 	FFlecsEntityHandle RegisterEntity(AActor* client);
