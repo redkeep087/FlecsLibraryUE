@@ -108,6 +108,9 @@ void UFlecsSubsystem::OnWorldBeginPlay(UWorld& InWorld) {
         return FPlatformTime::Cycles64();
     };
 
+    //const int32 ThreadCount = LowLevelTasks::FScheduler::Get().GetNumWorkers();
+    //world->set_task_threads(ThreadCount);
+
     Super::OnWorldBeginPlay(InWorld);
     UE_LOG(LogTemp, Warning, TEXT("Flecs Subsystem World BeginPlay"));
 }
@@ -122,7 +125,7 @@ void UFlecsSubsystem::Tick(float DeltaTime)
     if(world) { 
         updateAccumulator += DeltaTime;
         while (updateAccumulator >= FIXED_TIME) {
-            UE_LOG(LogTemp, Warning, TEXT("Tick values are: %f %f %f"), updateAccumulator, DeltaTime, FIXED_TIME);
+            //UE_LOG(LogTemp, Warning, TEXT("Tick values are: %f %f %f"), updateAccumulator, DeltaTime, FIXED_TIME);
             world->run_pipeline(fixedtickPipeline, FIXED_TIME);
             updateAccumulator -= FIXED_TIME;
         }
