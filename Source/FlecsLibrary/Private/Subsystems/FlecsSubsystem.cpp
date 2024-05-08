@@ -5,6 +5,9 @@
 
 static std::atomic<int32> GFLECSThreadCounter = 0;
 static TMap<int32, UE::Tasks::TTask<int32>> GFlecsTasksMap;
+
+float UFlecsSubsystem::FIXED_TIME = (float)1.0 / 25.0; // 25 FPS
+
 void UFlecsSubsystem::OnWorldBeginPlay(UWorld& InWorld) {
     // Setup subsystem ticker
 	//OnTickDelegate = FTickerDelegate::CreateUObject(this, &UFlecsSubsystem::Tick);
@@ -31,7 +34,7 @@ void UFlecsSubsystem::OnWorldBeginPlay(UWorld& InWorld) {
         .with<FlecsFixedUpdate>()
         .build();
 
-    //world->set_pipeline(regularPipeline);
+    world->set_pipeline(regularPipeline);
 
     // Setup FLECS OS API
     // Credit goes to Megafunk

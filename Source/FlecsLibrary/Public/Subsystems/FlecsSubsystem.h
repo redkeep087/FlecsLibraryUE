@@ -19,10 +19,11 @@ protected:
 	flecs::world* world = nullptr;
 	flecs::entity regularPipeline;
 	flecs::entity fixedtickPipeline;
-	const float FIXED_TIME = (float)1 / 25; // 25 FPS
 	float updateAccumulator = 0.0f;
 
 public:
+	static float FIXED_TIME;
+
 	//virtual void Initialize(FSubsystemCollectionBase& Collection) override;
 	//virtual void PostInitialize() override;
 	virtual void OnWorldBeginPlay(UWorld& InWorld);
