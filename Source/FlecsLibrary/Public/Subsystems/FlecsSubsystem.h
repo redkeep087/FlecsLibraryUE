@@ -2,12 +2,43 @@
 
 #include "CoreMinimal.h"
 #include "flecs/flecs.h"
-#include "FLECS/Common/FlecsClient.h"
 #include "Subsystems/WorldSubsystem.h"
 #include "FlecsSubsystem.generated.h"
 
-struct FlecsFixedUpdate {
+struct FlecsFixedUpdate { };
 
+USTRUCT(BlueprintType)
+struct FFlecsEntityHandle
+{
+	GENERATED_BODY()
+		FFlecsEntityHandle() {}
+
+	FFlecsEntityHandle(flecs::entity refEntity)
+	{
+		FlecsEntity = refEntity;
+	}
+
+	flecs::entity FlecsEntity;
+};
+
+// This class does not need to be modified.
+UINTERFACE(MinimalAPI, Blueprintable)
+class UFlecsClient : public UInterface
+{
+	GENERATED_BODY()
+};
+
+/**
+ * TODO: Try to make Blueprint friendly virtual functions
+ */
+class FLECSLIBRARY_API IFlecsClient
+{
+	GENERATED_BODY()
+
+public:
+	virtual FFlecsEntityHandle GetEntityHandle() = 0;
+
+	virtual AActor* GetActor_FlecsClient() = 0;
 };
 
 UCLASS()
@@ -44,9 +75,4 @@ public:
 	virtual TStatId GetStatId() const override;
 	//bool Tick(float DeltaTime);
 	virtual void Tick(float DeltaTime) override;
-
-	UFUNCTION(BlueprintCallable, Category = "FLECS")
-	FFlecsEntityHandle RegisterEntity(AActor* client);
-
-	virtual FFlecsEntityHandle RegisterEntity_Internal(IFlecsClient* client);
 };

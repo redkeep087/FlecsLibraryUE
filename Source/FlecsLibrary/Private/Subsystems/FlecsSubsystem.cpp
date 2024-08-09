@@ -1,5 +1,5 @@
 #include "Subsystems/FlecsSubsystem.h"
-#include "flecs/FlecsSetupClass.h"
+//#include "flecs/FlecsSetupClass.h"
 #include "Kismet/KismetSystemLibrary.h"
 #include "Tasks/Task.h"
 #include <Logging/StructuredLog.h>
@@ -177,29 +177,6 @@ void UFlecsSubsystem::Tick(float DeltaTime)
         // world->app().enable_rest().run();
     	world->progress(DeltaTime);
     }
-}
-
-// This can be overridable
-// Try to write something like this in your derivative implementation
-FFlecsEntityHandle UFlecsSubsystem::RegisterEntity(AActor* client) {
-    IFlecsClient* returnedClient = nullptr;
-    if (returnedClient) {
-        return RegisterEntity_Internal(returnedClient);
-    }
-    else {
-        UE_LOG(LogTemp, Warning, TEXT("No Clients found"));
-        return FFlecsEntityHandle();
-    }
-}
-
-FFlecsEntityHandle UFlecsSubsystem::RegisterEntity_Internal(IFlecsClient* client) {
-    if (client == nullptr) {
-        UE_LOG(LogTemp, Warning, TEXT("Client is NULL"));
-        return FFlecsEntityHandle();
-    }
-
-    UE_LOG(LogTemp, Warning, TEXT("No Entity Registered"));
-    return FFlecsEntityHandle();
 }
 
 void UFlecsSubsystem::Deinitialize() {
