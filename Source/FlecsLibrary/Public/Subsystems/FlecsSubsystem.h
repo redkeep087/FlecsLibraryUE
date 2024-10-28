@@ -5,6 +5,7 @@
 #include "Subsystems/WorldSubsystem.h"
 #include "FlecsSubsystem.generated.h"
 
+struct FlecsPreUpdate { };
 struct FlecsFixedUpdate { };
 
 USTRUCT(BlueprintType)
@@ -49,6 +50,7 @@ class FLECSLIBRARY_API UFlecsSubsystem : public UTickableWorldSubsystem // UGame
 protected:
 	flecs::world* world = nullptr;
 	flecs::entity regularPipeline;
+	flecs::entity preupdatePipeline;
 	flecs::entity fixedtickPipeline;
 	float updateAccumulator = 0.0f;
 
