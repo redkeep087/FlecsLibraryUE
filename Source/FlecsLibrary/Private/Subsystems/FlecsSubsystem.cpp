@@ -15,36 +15,36 @@ void UFlecsSubsystem::OnWorldBeginPlay(UWorld& InWorld) {
 	//OnTickHandle = FTSTicker::GetCoreTicker().AddTicker(OnTickDelegate);
 
 	//const char* argv[] = { "Unreal Engine FLECS" };
-	world = new flecs::world();
+	world = flecs::world();
 
     //flecs explorer and monitor
     //comment this out if you not using it, it has some performance overhead
     // go to https://www.flecs.dev/explorer/ when the project is running to inspect active entities and values
     // Alternatively this works better https://www.flecs.dev/explorer/?remote=true
 #ifdef WITH_EDITOR
-    world->import<flecs::monitor>();
-    world->set<flecs::Rest>({});
+    world.import<flecs::monitor>();
+    world.set<flecs::Rest>({});
 #endif
 
-	regularPipeline = world->pipeline()
+	regularPipeline = world.pipeline()
 		.with(flecs::System) // Mandatory, must always match systems
 		.without<FlecsPreUpdate>()
         .without<FlecsFixedUpdate>()
         .build();
 
-    fixedtickPipeline = world->pipeline()
+    fixedtickPipeline = world.pipeline()
         .with(flecs::System) // Mandatory, must always match systems
 		.without<FlecsPreUpdate>()
 		.with<FlecsFixedUpdate>()
         .build();
 
-	preupdatePipeline = world->pipeline()
+	preupdatePipeline = world.pipeline()
 		.with(flecs::System) // Mandatory, must always match systems
 		.with<FlecsPreUpdate>()
 		.without<FlecsFixedUpdate>()
 		.build();
 
-    world->set_pipeline(regularPipeline);
+    world.set_pipeline(regularPipeline);
 
     // Setup FLECS OS API
     // Credit goes to Megafunk
@@ -163,7 +163,7 @@ void UFlecsSubsystem::OnWorldBeginPlay(UWorld& InWorld) {
 
 	// probably should be set every frame
 	const int32 ThreadCount = LowLevelTasks::FScheduler::Get().GetNumWorkers();
-	world->set_task_threads(ThreadCount);
+	world.set_task_threads(ThreadCount);
 
     Super::OnWorldBeginPlay(InWorld);
     UE_LOG(LogTemp, Warning, TEXT("Flecs Subsystem World BeginPlay"));
@@ -177,26 +177,26 @@ TStatId UFlecsSubsystem::GetStatId() const
 void UFlecsSubsystem::Tick(float DeltaTime)
 {
     if(world) { 
-		world->run_pipeline(preupdatePipeline, DeltaTime);
+		world.run_pipeline(preupdatePipeline, DeltaTime);
         updateAccumulator += DeltaTime;
         while (updateAccumulator >= FIXED_TIME) {
             //UE_LOG(LogTemp, Warning, TEXT("Tick values are: %f %f %f"), updateAccumulator, DeltaTime, FIXED_TIME);
-            world->run_pipeline(fixedtickPipeline, FIXED_TIME);
+            world.run_pipeline(fixedtickPipeline, FIXED_TIME);
             updateAccumulator -= FIXED_TIME;
         }
         // world->app().enable_rest().run();
-    	world->progress(DeltaTime);
+    	world.progress(DeltaTime);
     }
 }
 
 void UFlecsSubsystem::Deinitialize() {
 	//FTSTicker::GetCoreTicker().RemoveTicker(OnTickHandle);
 
-	if (world)
-	{
-		delete world;
-		world = nullptr;
-	}
+	//if (world)
+	//{
+	//	delete world;
+	//	world = nullptr;
+	//}
 
 	UE_LOG(LogTemp, Warning, TEXT("Flecs Subsystem has shutdown"));
 	Super::Deinitialize();

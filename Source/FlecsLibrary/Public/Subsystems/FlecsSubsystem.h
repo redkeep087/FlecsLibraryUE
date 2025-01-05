@@ -48,7 +48,7 @@ class FLECSLIBRARY_API UFlecsSubsystem : public UTickableWorldSubsystem // UGame
 	GENERATED_BODY()
 
 protected:
-	flecs::world* world = nullptr;
+	flecs::world world;
 	flecs::entity regularPipeline;
 	flecs::entity preupdatePipeline;
 	flecs::entity fixedtickPipeline;
@@ -72,7 +72,9 @@ public:
 	//FTickerDelegate OnTickDelegate;
 	//FTSTicker::FDelegateHandle OnTickHandle;
 
-	flecs::world* GetEcsWorld() const { return world; }
+	flecs::world* GetEcsWorld() {
+		return &world;
+	}
 
 	virtual TStatId GetStatId() const override;
 	//bool Tick(float DeltaTime);
